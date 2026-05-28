@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LocalFinder</title>
+    <meta
+      name="description"
+      content="Interfaz simple de LocalFinder en HTML, CSS y JavaScript."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="logo">🔍</div>
+          <div>
+            <h1>LocalFinder</h1>
+            <p>Buscador local</p>
+          </div>
+        </div>
+
+        <nav class="menu">
+          <button class="menu-item active" data-page="search">🔍 Motor de Busqueda</button>
+          <button class="menu-item" data-page="settings">⚙ Configuracion Indice</button>
+          <button class="menu-item" data-page="history">📋 Historial</button>
+          <button class="menu-item" data-page="monitor">📊 Monitoreo</button>
+        </nav>
+
+        <div class="status">
+          <span class="dot"></span>
+          <div>
+            <strong>Crawler: Activo</strong>
+            <small>Ultimo scan: hace 2 min</small>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="page active" id="page-search">
+          <h2>Motor de Busqueda</h2>
+          <p class="subtitle">Busca archivos en tu sistema local</p>
+
+          <div class="card search-bar">
+            <input id="search-input" type="text" placeholder="Escribe el nombre del archivo..." />
+            <button id="search-btn">Buscar</button>
+          </div>
+
+          <div id="search-filters" class="filters"></div>
+          <div id="search-results"></div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <h2>Configuracion del Indice</h2>
+          <p class="subtitle">Define directorios y tipos de archivo</p>
+          <div class="card">
+            <h3>Directorios</h3>
+            <ul id="dir-list"></ul>
+            <div class="inline">
+              <input id="dir-input" type="text" placeholder="/ruta/al/directorio" />
+              <button id="add-dir-btn">Agregar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-history">
+          <h2>Historial de Busquedas</h2>
+          <p class="subtitle">Tus consultas recientes</p>
+          <div class="card">
+            <button id="clear-history-btn" class="danger">Limpiar todo</button>
+            <ul id="history-list" class="list"></ul>
+          </div>
+        </section>
+
+        <section class="page" id="page-monitor">
+          <h2>Panel de Monitoreo</h2>
+          <p class="subtitle">Estado tecnico simulado en tiempo real</p>
+          <div class="kpis">
+            <div class="card"><span>CPU</span><strong id="kpi-cpu">42%</strong></div>
+            <div class="card"><span>Memoria</span><strong id="kpi-mem">58%</strong></div>
+            <div class="card"><span>Indexados</span><strong id="kpi-indexed">14872</strong></div>
+            <div class="card"><span>En cola</span><strong id="kpi-queue">23</strong></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+  
