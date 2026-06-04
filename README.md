@@ -29,9 +29,60 @@ El sistema está construido bajo una arquitectura modular de 4 capas lógicas (P
 
 ---
 
-## Planes a Futuro: Diseño de Interfaz (UI)
+# Casos de Uso Implementados
 
-El próximo hito del proyecto es la implementación de la **Capa de Presentación** con JavaFX. El diseño minimalista contempla 5 vistas principales enfocadas en reducir la carga cognitiva del usuario.
+## CU01 - Buscar Archivos
+Actor: Usuario
+
+Permite realizar búsquedas sobre documentos previamente indexados por el sistema.
+
+---
+
+## CU02 - Ver Resultados de Búsqueda
+Actor: Usuario
+
+Permite visualizar los documentos encontrados junto con información relevante como nombre, ruta y fecha.
+
+---
+
+## CU03 - Filtrar Resultados
+Actor: Usuario
+
+Permite restringir los resultados mediante criterios específicos.
+
+---
+
+## CU04 - Ver Contenido del Archivo
+Actor: Usuario
+
+Permite visualizar información asociada al documento encontrado.
+
+---
+
+## CU05 - Gestionar Índice
+Actor: Administrador
+
+Permite administrar el índice de búsqueda utilizado por Apache Lucene.
+
+---
+
+## CU06 - Ejecutar Crawler
+Actor: Administrador
+
+Permite iniciar el proceso de exploración e identificación de archivos dentro de los directorios configurados.
+
+---
+
+## CU07 - Actualizar Repositorio de Archivos
+Actor: Administrador
+
+Permite sincronizar los documentos almacenados con el índice del sistema.
+
+---
+
+## Estado Actual de la Interfaz (UI)
+
+Actualmente se encuentra implementada una primera versión funcional de la capa de presentación utilizando JavaFX. Esta versión incluye navegación entre módulos, motor de búsqueda, configuración, historial y panel de estado, los cuales serán integrados progresivamente con la lógica de negocio y el motor de búsqueda basado en Apache Lucene.
 
 A continuación se detallan las vistas planificadas:
 
