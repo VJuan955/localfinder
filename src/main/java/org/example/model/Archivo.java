@@ -11,6 +11,9 @@ public class Archivo {
 
     public Archivo() {}
 
+    public int getIdArchivo() { return idArchivo; }
+    public void setIdArchivo(int idArchivo) { this.idArchivo = idArchivo; }
+
     public String getRutaArchivo() { return rutaArchivo; }
     public void setRutaArchivo(String rutaArchivo) { this.rutaArchivo = rutaArchivo; }
 

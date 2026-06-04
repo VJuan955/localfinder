@@ -1,5 +1,7 @@
-package org.example.dao;
+package org.example.dao.impl;
 
+import org.example.dao.DatabaseManager;
+import org.example.dao.DirectorioDAO;
 import org.example.model.Directorio;
 import java.sql.*;
 import java.util.ArrayList;

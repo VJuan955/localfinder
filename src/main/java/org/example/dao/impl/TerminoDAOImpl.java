@@ -1,5 +1,7 @@
-package org.example.dao;
+package org.example.dao.impl;
 
+import org.example.dao.DatabaseManager;
+import org.example.dao.TerminoDAO;
 import org.example.model.Termino;
 import java.sql.*;
 import java.util.Optional;

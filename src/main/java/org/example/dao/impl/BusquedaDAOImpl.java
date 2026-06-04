@@ -1,5 +1,7 @@
-package org.example.dao;
+package org.example.dao.impl;
 
+import org.example.dao.BusquedaDAO;
+import org.example.dao.DatabaseManager;
 import org.example.model.Busqueda;
 import java.sql.*;
 import java.util.ArrayList;
