@@ -25,18 +25,71 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servicio encargado de indexar documentos y ejecutar búsquedas
+ * utilizando Apache Lucene.
+ *
+ * <p>Los documentos se almacenan en un índice persistente ubicado
+ * en el sistema de archivos. El contenido textual es analizado
+ * mediante {@link StandardAnalyzer} y las búsquedas utilizan el
+ * algoritmo de relevancia TF-IDF proporcionado por
+ * {@link ClassicSimilarity}.</p>
+ *
+ * <p>Cada documento indexado se asocia a un identificador de archivo
+ * proveniente de la base de datos, permitiendo relacionar los
+ * resultados obtenidos con los metadatos almacenados en SQLite.</p>
+ *
+ * @author VJuan955
+ * @version 1.0
+ */
 public class IndexadorLuceneService {
+
+    private static final Logger logger = LoggerFactory.getLogger(IndexadorLuceneService.class);
+
+    /**
+     * Ruta física donde se almacena el índice de Lucene.
+     */
     private static final String RUTA_INDICE_LUCENE = "./lucene_index";
+
+    /**
+     * Directorio persistente utilizado por Lucene para almacenar
+     * la estructura del índice.
+     */
     private final Directory directorioIndice;
+
+    /**
+     * Analizador encargado de tokenizar y normalizar el contenido
+     * textual durante la indexación y las búsquedas.
+     */
     private final Analyzer analizador;
 
+    /**
+     * Inicializa el motor de indexación y búsqueda.
+     *
+     * @throws IOException si no es posible acceder o crear
+     *                     el directorio del índice
+     */
     public IndexadorLuceneService() throws IOException {
         this.directorioIndice = FSDirectory.open(Paths.get(RUTA_INDICE_LUCENE));
 
         this.analizador = new StandardAnalyzer();
     }
 
+    /**
+     * Indexa o actualiza un documento dentro del índice de Lucene.
+     *
+     * <p>Si el archivo ya existe en el índice, su contenido será
+     * reemplazado por la nueva versión.</p>
+     *
+     * @param idArchivo identificador único del archivo
+     * @param contenidoTexto contenido textual extraído del documento
+     */
     public void indexarArchivo(int idArchivo, String contenidoTexto) {
+        logger.debug("Indexando archivo {}", idArchivo);
+
         IndexWriterConfig config = new IndexWriterConfig(analizador);
 
         config.setSimilarity(new ClassicSimilarity());
@@ -52,17 +105,34 @@ public class IndexadorLuceneService {
             writer.updateDocument(new Term("id_archivo", String.valueOf(idArchivo)), documento);
 
             writer.commit();
+
+            logger.info("Archivo {} indexado correctamente", idArchivo);
         } catch (IOException e) {
-            System.err.println("Error al indexar en Lucene el archivo ID: " + idArchivo + " - " + e.getMessage());
+            logger.error("Error al indexar archivo {}", idArchivo, e);
         }
     }
 
+    /**
+     * Ejecuta una búsqueda textual sobre el índice.
+     *
+     * <p>Los resultados se devuelven ordenados según la puntuación
+     * de relevancia calculada por Lucene.</p>
+     *
+     * @param consultaUsuario consulta introducida por el usuario
+     * @param limiteResultados cantidad máxima de resultados
+     *                         a recuperar
+     * @return mapa donde la clave representa el identificador
+     *         del archivo y el valor su puntuación de relevancia
+     */
     public Map<Integer, Float> buscar(String consultaUsuario, int limiteResultados) {
         Map<Integer, Float> resultados = new HashMap<>();
 
         if (consultaUsuario == null || consultaUsuario.trim().isEmpty()) {
+            logger.debug("Consulta vacía ignorada");
             return resultados;
         }
+
+        logger.debug("Ejecutando búsqueda: '{}'", consultaUsuario);
 
         try (DirectoryReader reader = DirectoryReader.open(directorioIndice)) {
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -73,6 +143,7 @@ public class IndexadorLuceneService {
             String consultaProcesada = consultaUsuario.trim().contains(" ") ? consultaUsuario : consultaUsuario + "*";
 
             Query query = parser.parse(consultaProcesada);
+            logger.trace("Consulta Lucene generada: {}", consultaProcesada);
 
             TopDocs topDocs = searcher.search(query, limiteResultados);
 
@@ -83,10 +154,12 @@ public class IndexadorLuceneService {
 
                 resultados.put(idArchivo, score);
             }
+
+            logger.info("Búsqueda '{}' devolvió {} resultados", consultaUsuario, resultados.size());
         } catch (IOException e) {
-            System.err.println("No se encontró el directorio del índice o está bloqueado: " + e.getMessage());
+            logger.error("Error al acceder al índice Lucene", e);
         } catch (ParseException e) {
-            System.err.println("Sintaxis de búsqueda inválida: " + e.getMessage());
+            logger.warn("Consulta inválida: '{}'", consultaUsuario, e);
         }
 
         return resultados;

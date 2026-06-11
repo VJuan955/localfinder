@@ -1,18 +1,37 @@
 package org.example.dao.impl;
 
 import org.example.dao.ArchivoDAO;
-import org.example.dao.DatabaseManager;
+import org.example.database.DatabaseManager;
 import org.example.model.Archivo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Implementación JDBC de {@link ArchivoDAO}.
+ *
+ * <p>Gestiona las operaciones de persistencia relacionadas con
+ * los archivos registrados en el sistema utilizando SQLite.</p>
+ *
+ * @author VJuan955
+ * @version 1.0
+ */
 public class ArchivoDAOImpl implements ArchivoDAO {
 
+    private static final Logger logger = LoggerFactory.getLogger(ArchivoDAOImpl.class);
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insertar(Archivo archivo, int idDirectorio) {
-        String sql = "INSERT INTO Archivo (ruta_directorio, nombre_archivo, tipo_archivo, tamano, hash_archivo, fecha_modificacion, id_directorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        logger.debug("Insertando archivo: {}", archivo.getRutaArchivo());
+
+        String sql = "INSERT INTO Archivo (ruta_archivo, nombre_archivo, tipo_archivo, tamano, hash_archivo, fecha_modificacion, id_directorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -26,13 +45,20 @@ public class ArchivoDAOImpl implements ArchivoDAO {
             pstmt.setInt(7, idDirectorio);
 
             pstmt.executeUpdate();
+
+            logger.info("Archivo registrado correctamente: {}", archivo.getNombreArchivo());
         } catch (SQLException e) {
-            System.err.println("Error al insertar archivo: " + e.getMessage());
+            logger.error("Error al insertar archivo: {}", archivo.getRutaArchivo(), e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actualizar(Archivo archivo) {
+        logger.debug("Actualizando archivo: {}", archivo.getRutaArchivo());
+
         String sql = "UPDATE Archivo SET nombre_archivo = ?, tipo_archivo = ?, tamano = ?," +
                 "hash_archivo = ?, fecha_modificacion = ? WHERE ruta_archivo = ?";
 
@@ -46,13 +72,20 @@ public class ArchivoDAOImpl implements ArchivoDAO {
             pstmt.setString(6, archivo.getRutaArchivo());
 
             pstmt.executeUpdate();
+
+            logger.info("Archivo actualizado: {}", archivo.getRutaArchivo());
         } catch (SQLException e) {
-            System.err.println("Error al actualizar archivo: " + e.getMessage());
+            logger.error("Error al actualizar archivo: {}", archivo.getRutaArchivo(), e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Archivo> buscarPorRuta(String ruta) {
+        logger.debug("Buscando archivo por rutas: {}", ruta);
+
         String sql = "SELECT * FROM Archivo WHERE ruta_archivo = ?";
 
         try (Connection conn = DatabaseManager.getConnection();
@@ -61,6 +94,8 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
+                    logger.debug("Archivo encontrado: {}", ruta);
+
                     Archivo archivo = new Archivo();
 
                     archivo.setRutaArchivo(rs.getString("ruta_archivo"));
@@ -72,9 +107,11 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
                     return Optional.of(archivo);
                 }
+
+                logger.debug("No se encontró archivo para la ruta: {}", ruta);
             }
         } catch (SQLException e) {
-            System.err.println("Error al buscar archivo: " + e.getMessage());
+            logger.error("Error al buscar archivo: {}", ruta, e);
         }
 
         return Optional.empty();
@@ -82,6 +119,8 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
     @Override
     public List<Archivo> obtenerTodos() {
+        logger.debug("Recuperando listado de archivos");
+
         List<Archivo> archivos = new ArrayList<>();
         String sql = "SELECT * FROM Archivo";
 
@@ -98,8 +137,10 @@ public class ArchivoDAOImpl implements ArchivoDAO {
                 doc.setFechaModificacion(rs.getLong("fecha_modificacion"));
                 archivos.add(doc);
             }
+
+            logger.debug("Se recuperaron {} archivos", archivos.size());
         } catch (SQLException e) {
-            System.err.println("Error al listar archivos: " + e.getMessage());
+            logger.error("Error al listar archivos", e);
         }
         return archivos;
     }

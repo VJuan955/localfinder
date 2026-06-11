@@ -1,12 +1,34 @@
 package org.example.model;
 
+/**
+ * Representa un resultado obtenido a partir de una búsqueda.
+ *
+ * <p>Contiene la posición y relevancia de un archivo dentro de
+ * una consulta determinada.</p>
+ *
+ * @author VJuan955
+ * @version 1.0
+ */
 public class Resultado {
+
+    /** Identificador único del resultado. */
     private int idResultado;
+
+    /** Posición del resultado dentro del listado obtenido. */
     private int posicionResultado;
+
+    /** Puntaje de relevancia calculado para el resultado. */
     private double ranking;
+
+    /** Identificador de la búsqueda asociada. */
     private int idBusqueda;
+
+    /** Identificador del archivo asociado. */
     private int idArchivo;
 
+    /**
+     * Crea una instancia vacía de Resultado.
+     */
     public Resultado() {}
 
     public int getIdResultado() { return idResultado; }

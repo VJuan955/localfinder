@@ -10,25 +10,68 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servicio encargado de extraer contenido textual y calcular hashes
+ * de documentos soportados por el sistema.
+ *
+ * <p>Utiliza Apache Tika para procesar diferentes formatos de archivo
+ * y generar una representación textual unificada que posteriormente
+ * puede ser indexada por el motor de búsqueda.</p>
+ *
+ * <p>También proporciona funcionalidades para calcular hashes SHA-256
+ * utilizados en la detección de modificaciones y duplicados.</p>
+ *
+ * @author VJuan955
+ * @version 1.0
+ */
 public class ExtractorContenidoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExtractorContenidoService.class);
+
+    /**
+     * Instancia de Apache Tika utilizada para la extracción de contenido.
+     */
     private final Tika tika;
 
+    /**
+     * Inicializa el servicio de extracción de contenido.
+     *
+     * <p>Configura Apache Tika para permitir la extracción completa del
+     * contenido textual sin restricciones de longitud.</p>
+     */
     public ExtractorContenidoService() {
         this.tika = new Tika();
 
-        this.tika.setMaxStringLength(-1);
+        this.tika.setMaxStringLength(10_000_000);
     }
 
+    /**
+     * Extrae el contenido textual de un archivo utilizando Apache Tika.
+     *
+     * @param rutaArchivo ruta del archivo a procesar
+     * @return texto extraído o una cadena vacía si ocurre un error
+     */
     public String extraerTexto(Path rutaArchivo) {
         try {
-            return tika.parseToString(rutaArchivo);
+            String extraccion = tika.parseToString(rutaArchivo);
+            logger.debug("Contenido extraído correctamente: {}", rutaArchivo);
+            return extraccion;
         } catch (IOException | TikaException e) {
-            System.err.println("Advertencia - No se pudo procesar el contenido de: "
-                    + rutaArchivo.toString() + " | Motivo: " + e.getMessage());
+            logger.warn("No fue posible extraer contenido de {}", rutaArchivo, e);
             return "";
         }
     }
 
+    /**
+     * Calcula el hash SHA-256 de un archivo.
+     *
+     * @param rutaArchivo ruta del archivo
+     * @return representación hexadecimal del hash calculado o
+     *         {@code null} si ocurre un error
+     */
     public String calcularHash(Path rutaArchivo) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -48,12 +91,13 @@ public class ExtractorContenidoService {
                     if (hex.length() == 1) hexString.append('0');
                     hexString.append(hex);
                 }
+
+                logger.trace("Hash SHA-256 calculado para {}", rutaArchivo);
                 return hexString.toString();
             }
         } catch (NoSuchAlgorithmException | IOException e) {
-            System.err.println("Advertencia - No se pudo calcular el hash de: "
-                    + rutaArchivo.toString() + " | Motivo: " + e.getMessage());
-            return null;
+            logger.warn("No fue posible calcular el hash de {}", rutaArchivo, e);
+            return "";
         }
     }
 }

@@ -1,18 +1,57 @@
-package org.example.dao;
+package org.example.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Gestionar la conexión y la inicialización de la base de datos SQLite.
+ *
+ * <p>Esta clase proporciona un punto centralizado para obtener
+ * conexiones JDBC y crear la estructura de tablas e índices
+ * necesarios para el funcionamiento del sistema.</p>
+ *
+ * <p>La base de datos se almacena localmente en el archivo
+ * {@code localfinder.db}.</p>
+ *
+ * @author VJuan955
+ * @version 1.0
+ */
 public class DatabaseManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
+
+    /**
+     * URL JDBC utilizada para acceder a la base de datos SQLite.
+     */
     private static final String URL = "jdbc:sqlite:localfinder.db";
 
+    /**
+     * Obtiene una nueva conexión a la base de datos.
+     *
+     * @return conexión activa a SQLite
+     * @throws SQLException si ocurre un error al establecer la conexión
+     */
     public static Connection getConnection() throws SQLException {
+        logger.debug("Abriendo conexión SQLite");
+
         return DriverManager.getConnection(URL);
     }
 
+    /**
+     * Crea las tablas e índices requeridos por la aplicación
+     * cuando aún no existen.
+     *
+     * <p>La operación es idempotente, por lo que puede ejecutarse
+     * múltiples veces sin afectar la estructura existente.</p>
+     */
     public static void inicializarBaseDeDatos() {
+        logger.info("Inicializando base de datos");
+
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
@@ -20,7 +59,7 @@ public class DatabaseManager {
                     "id_directorio INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "ruta_directorio TEXT NOT NULL, " +
                     "estado TEXT NOT NULL, " +
-                    "fecha_registro INTEGER NOT NULL");
+                    "fecha_registro INTEGER NOT NULL)");
 
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_directorio_ruta ON Directorio(ruta_directorio)");
 
@@ -79,8 +118,9 @@ public class DatabaseManager {
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_resultado_historial ON Resultado(id_busqueda, posicion_resultado)");
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_resultado_ranking ON Resultado(ranking)");
 
+            logger.info("Base de datos inicializada correctamente");
         } catch (SQLException e) {
-            System.err.println("Error al inicializar la Base de datos" + e.getMessage());
+            logger.error("Error al inicializar la base de datos", e);
         }
     }
 }

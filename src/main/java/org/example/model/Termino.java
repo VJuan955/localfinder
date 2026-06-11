@@ -1,10 +1,28 @@
 package org.example.model;
 
+/**
+ * Representa un término almacenado en el índice de búsqueda.
+ *
+ * <p>Contiene la palabra indexada y la frecuencia total de aparición
+ * en el conjunto de documentos.</p>
+ *
+ * @author VJuan955
+ * @version 1.0
+ */
 public class Termino {
+
+    /** Identificador único del término */
     private int idTermino;
+
+    /** Palabra indexada. */
     private String palabra;
+
+    /** Frecuencia global del término en todos los documentos. */
     private int frecuenciaGlobal;
 
+    /**
+     * Crea una instancia vacía de Termino
+     */
     public Termino() {}
 
     public int getIdTermino() { return idTermino; }
