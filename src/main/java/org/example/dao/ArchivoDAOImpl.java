@@ -1,5 +1,7 @@
-package org.example.dao;
+package org.example.dao.impl;
 
+import org.example.dao.ArchivoDAO;
+import org.example.dao.DatabaseManager;
 import org.example.model.Archivo;
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
     @Override
     public void insertar(Archivo archivo, int idDirectorio) {
-        String sql = "INSERT INTO Archivo (ruta_directorio, nombre_archivo, tipo_archivo, tamano, hash_archivo, fecha_modificacion, id_directorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        String sql = "INSERT INTO Archivo (ruta_archivo, nombre_archivo, tipo_archivo, tamano, hash_archivo, fecha_modificacion, id_directorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -60,21 +63,19 @@ public class ArchivoDAOImpl implements ArchivoDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     Archivo archivo = new Archivo();
-
+                    archivo.setIdArchivo(rs.getInt("id_archivo"));
                     archivo.setRutaArchivo(rs.getString("ruta_archivo"));
                     archivo.setNombreArchivo(rs.getString("nombre_archivo"));
                     archivo.setTipoArchivo(rs.getString("tipo_archivo"));
                     archivo.setTamano(rs.getLong("tamano"));
                     archivo.setHashArchivo(rs.getString("hash_archivo"));
                     archivo.setFechaModificacion(rs.getLong("fecha_modificacion"));
-
                     return Optional.of(archivo);
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error al buscar archivo: " + e.getMessage());
         }
-
         return Optional.empty();
     }
 
@@ -89,6 +90,7 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
             while (rs.next()) {
                 Archivo doc = new Archivo();
+                doc.setIdArchivo(rs.getInt("id_archivo"));
                 doc.setRutaArchivo(rs.getString("ruta_archivo"));
                 doc.setNombreArchivo(rs.getString("nombre_archivo"));
                 doc.setTipoArchivo(rs.getString("tipo_archivo"));
