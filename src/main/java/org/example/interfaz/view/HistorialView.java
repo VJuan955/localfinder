@@ -32,7 +32,7 @@ public HistorialView(MainController controller) {
         setSpacing(15);
         setPadding(new Insets(30));
 
-        // ─── Encabezado ──────────────────────────────────────
+        
         Label titulo = new Label("🕒 Historial de Búsquedas");
         titulo.setStyle(
                 "-fx-font-size:22px;" +
@@ -45,7 +45,7 @@ public HistorialView(MainController controller) {
         );
         subtitulo.setStyle("-fx-text-fill:#64748b; -fx-font-size:13px;");
 
-        // ─── Botón limpiar (esquina derecha) ─────────────────
+        
         Button btnLimpiar = new Button("🗑 Limpiar vista");
         btnLimpiar.setStyle(
                 "-fx-background-color:#fee2e2;" +
@@ -60,7 +60,7 @@ public HistorialView(MainController controller) {
         HBox cabecera = new HBox(titulo, spacer, btnLimpiar);
         cabecera.setAlignment(Pos.CENTER_LEFT);
 
-        // ─── Tabla de resultados ─────────────────────────────
+        
         TableView<Busqueda> tabla = new TableView<>();
         tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         VBox.setVgrow(tabla, Priority.ALWAYS);
@@ -94,10 +94,10 @@ public HistorialView(MainController controller) {
 
         tabla.getColumns().addAll(colId, colTermino, colFecha);
 
-        // ─── Cargar datos desde la BD ─────────────────────────
+        
         cargarHistorial(tabla);
 
-        // ─── Etiqueta de estado ──────────────────────────────
+        
         Label lblEstado = new Label();
         lblEstado.setStyle("-fx-text-fill:#64748b; -fx-font-size:12px;");
 
@@ -108,7 +108,7 @@ public HistorialView(MainController controller) {
             lblEstado.setText("Mostrando " + total + " búsqueda(s) registrada(s).");
         }
 
-        // ─── Acción limpiar (solo limpia la vista, no la BD) ─
+        
         btnLimpiar.setOnAction(e -> {
             tabla.getItems().clear();
             lblEstado.setText("Vista limpiada. Los registros siguen en la base de datos.");

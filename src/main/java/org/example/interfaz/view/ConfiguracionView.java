@@ -14,7 +14,7 @@ public class ConfiguracionView extends VBox {
     private final MainController controller;
     private final ListView<String> listaRutas;
 
-    // Guardamos los IDs para poder eliminar correctamente
+    
     private final javafx.collections.ObservableList<Directorio> directorios =
             javafx.collections.FXCollections.observableArrayList();
 
@@ -26,7 +26,7 @@ public class ConfiguracionView extends VBox {
         setSpacing(15);
         setPadding(new Insets(30));
 
-        // ─── Título ───────────────────────────────────────────
+        
         Label titulo = new Label("⚙ Configuración del Índice");
         titulo.setStyle(
                 "-fx-font-size:22px;" +
@@ -39,13 +39,13 @@ public class ConfiguracionView extends VBox {
         );
         subtitulo.setStyle("-fx-text-fill:#64748b; -fx-font-size:13px;");
 
-        // ─── Lista de rutas ───────────────────────────────────
+        // ─── Lista de rutas
         listaRutas.setPrefHeight(200);
         VBox.setVgrow(listaRutas, Priority.ALWAYS);
 
         cargarDirectorios();
 
-        // ─── Campo para nueva ruta ────────────────────────────
+        // ─── Campo para nueva ruta 
         TextField txtNuevaRuta = new TextField();
         txtNuevaRuta.setPromptText("Ej: C:/Documentos/Proyectos");
         txtNuevaRuta.setStyle(
@@ -56,7 +56,7 @@ public class ConfiguracionView extends VBox {
         );
         HBox.setHgrow(txtNuevaRuta, Priority.ALWAYS);
 
-        // ─── Botones ──────────────────────────────────────────
+        
         Button btnAgregar = new Button("➕ Agregar");
         btnAgregar.setStyle(
                 "-fx-background-color:#1e40af;" +
@@ -78,11 +78,11 @@ public class ConfiguracionView extends VBox {
         HBox panelInput = new HBox(10, txtNuevaRuta, btnAgregar);
         panelInput.setAlignment(Pos.CENTER_LEFT);
 
-        // ─── Etiqueta de estado ───────────────────────────────
+        
         Label lblEstado = new Label("");
         lblEstado.setStyle("-fx-font-size:12px;");
 
-        // ─── Acción AGREGAR ───────────────────────────────────
+        
         btnAgregar.setOnAction(e -> {
             String ruta = txtNuevaRuta.getText().trim();
 
@@ -105,7 +105,7 @@ public class ConfiguracionView extends VBox {
             try {
                 controller.agregarDirectorio(ruta);
                 txtNuevaRuta.clear();
-                cargarDirectorios();   // recarga la lista desde la BD
+                cargarDirectorios();   
                 mostrarEstado(lblEstado,
                         "✔ Directorio agregado correctamente.", "#15803d");
             } catch (Exception ex) {
@@ -114,7 +114,7 @@ public class ConfiguracionView extends VBox {
             }
         });
 
-        // ─── Acción ELIMINAR ──────────────────────────────────
+        
         btnEliminar.setOnAction(e -> {
             int idx = listaRutas.getSelectionModel().getSelectedIndex();
 
@@ -157,11 +157,9 @@ public class ConfiguracionView extends VBox {
         );
     }
 
-    // ─── Helpers ──────────────────────────────────────────────
+    
 
-    /**
-     * Carga (o recarga) la lista de directorios desde la BD.
-     */
+  
     private void cargarDirectorios() {
         try {
             List<Directorio> lista = controller.obtenerDirectorios();
