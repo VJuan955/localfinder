@@ -16,36 +16,19 @@ public class MainController {
         this.busquedaService = busquedaService;
         this.directorioService = directorioService;
     }
-
-    // ─── Historial ───────────────────────────────────────────
-
-    /**
-     * Devuelve todas las búsquedas registradas en la BD,
-     * ordenadas de más reciente a más antigua.
-     */
+    
     public List<Busqueda> obtenerHistorial() {
         return busquedaService.obtenerHistorial();
     }
-
-    // ─── Configuración de directorios ────────────────────────
-
-    /**
-     * Devuelve todos los directorios registrados en la BD.
-     */
+    
     public List<Directorio> obtenerDirectorios() {
         return directorioService.obtenerDirectorios();
     }
-
-    /**
-     * Registra un nuevo directorio con estado 'activo'.
-     */
+    
     public void agregarDirectorio(String ruta) {
         directorioService.agregarDirectorio(ruta);
     }
-
-    /**
-     * Elimina un directorio de la BD por su ID.
-     */
+    
     public void eliminarDirectorio(int idDirectorio) {
         directorioService.eliminar(idDirectorio);
     }
