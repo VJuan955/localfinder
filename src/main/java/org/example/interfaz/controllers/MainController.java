@@ -1,23 +1,20 @@
 package org.example.interfaz.controllers;
 
-import org.example.dao.BusquedaDAO;
-import org.example.dao.DirectorioDAO;
-import org.example.dao.impl.BusquedaDAOImpl;
-import org.example.dao.impl.DirectorioDAOImpl;
 import org.example.model.Busqueda;
 import org.example.model.Directorio;
+import org.example.service.BusquedaService;
+import org.example.service.DirectorioService;
 
 import java.util.List;
 
 public class MainController {
 
-    // ─── DAOs ────────────────────────────────────────────────
-    private final BusquedaDAO busquedaDAO;
-    private final DirectorioDAO directorioDAO;
+    private final BusquedaService busquedaService;
+    private final DirectorioService directorioService;
 
-    public MainController() {
-        this.busquedaDAO   = new BusquedaDAOImpl();
-        this.directorioDAO = new DirectorioDAOImpl();
+    public MainController(DirectorioService directorioService, BusquedaService busquedaService) {
+        this.busquedaService = busquedaService;
+        this.directorioService = directorioService;
     }
 
     // ─── Historial ───────────────────────────────────────────
@@ -27,7 +24,7 @@ public class MainController {
      * ordenadas de más reciente a más antigua.
      */
     public List<Busqueda> obtenerHistorial() {
-        return busquedaDAO.obtenerHistorial();
+        return busquedaService.obtenerHistorial();
     }
 
     // ─── Configuración de directorios ────────────────────────
@@ -36,24 +33,20 @@ public class MainController {
      * Devuelve todos los directorios registrados en la BD.
      */
     public List<Directorio> obtenerDirectorios() {
-        return directorioDAO.obtenerTodos();
+        return directorioService.obtenerDirectorios();
     }
 
     /**
      * Registra un nuevo directorio con estado 'activo'.
      */
     public void agregarDirectorio(String ruta) {
-        Directorio dir = new Directorio();
-        dir.setRutaDirectorio(ruta);
-        dir.setEstado("activo");
-        dir.setFechaRegistro(System.currentTimeMillis());
-        directorioDAO.insertar(dir);
+        directorioService.agregarDirectorio(ruta);
     }
 
     /**
      * Elimina un directorio de la BD por su ID.
      */
     public void eliminarDirectorio(int idDirectorio) {
-        directorioDAO.eliminar(idDirectorio);
+        directorioService.eliminar(idDirectorio);
     }
 }
