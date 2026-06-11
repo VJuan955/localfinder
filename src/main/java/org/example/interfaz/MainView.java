@@ -20,7 +20,7 @@ public class MainView {
         this.controller = controller;
         this.root       = new BorderPane();
 
-        // ─── Menú lateral ─────────────────────────────────────
+        
         VBox menu = new VBox(10);
         menu.setPadding(new Insets(15));
         menu.setPrefWidth(220);
@@ -32,7 +32,7 @@ public class MainView {
         Button btnEstado    = new Button("📊 Estado");
         Button btnTema      = new Button("🌙 Tema");
 
-        // Estilo base de botones del menú
+        
         String estiloBtn =
                 "-fx-background-color:transparent;" +
                 "-fx-text-fill:#cbd5e1;" +
@@ -63,10 +63,10 @@ public class MainView {
 
         root.setLeft(menu);
 
-        // Vista inicial: Búsqueda
+        
         root.setCenter(new BusquedaView());
 
-        // ─── Navegación ────────────────────────────────────────
+        
         btnBusqueda.setOnAction(e -> openView(new BusquedaView()));
 
         btnConfig.setOnAction(e -> openView(new ConfiguracionView(controller)));
@@ -75,7 +75,7 @@ public class MainView {
 
         btnEstado.setOnAction(e -> openView(new EstadoView()));
 
-        // ─── Tema oscuro / claro ───────────────────────────────
+        
         btnTema.setOnAction(e -> {
             oscuro = !oscuro;
             if (oscuro) {
