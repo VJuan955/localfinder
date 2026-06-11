@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * <p>Gestiona las operaciones de persistencia relacionadas con
  * los archivos registrados en el sistema utilizando SQLite.</p>
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public class ArchivoDAOImpl implements ArchivoDAO {

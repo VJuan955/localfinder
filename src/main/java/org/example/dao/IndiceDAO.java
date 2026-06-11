@@ -7,7 +7,7 @@ import java.util.List;
  * Define las operaciones de persistencia para las entradas del índice
  * de búsqueda.
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public interface IndiceDAO {

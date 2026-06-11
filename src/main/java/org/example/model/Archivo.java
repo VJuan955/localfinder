@@ -6,7 +6,7 @@ package org.example.model;
  * <p>Almacena la información básica del archivo, incluyendo su ubicación,
  * tipo, tamaño, fecha de modificación y hash de verificación.</p>
  *
- * @author VJuan955
+ * @author AbelardoQuinones00
  * @version 1.0
  */
 public class Archivo {

@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * <p>Permite registrar búsquedas realizadas por el usuario
  * y recuperar el historial almacenado.</p>
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public class BusquedaDAOImpl implements BusquedaDAO {

@@ -7,7 +7,7 @@ import java.util.Optional;
  * Define las operaciones de persistencia para los términos
  * indexados por el sistema.
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public interface TerminoDAO {

@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * <p>Gestiona el almacenamiento y mantenimiento de los directorios
  * registrados para monitoreo e indexación.</p>
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public class DirectorioDAOImpl implements DirectorioDAO {

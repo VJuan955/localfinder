@@ -10,7 +10,7 @@ import java.util.Optional;
  * <p>Permite registrar, actualizar y consultar archivos almacenados
  * en la base de datos.</p>
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public interface ArchivoDAO {

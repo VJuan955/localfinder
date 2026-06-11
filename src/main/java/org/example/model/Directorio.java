@@ -6,7 +6,7 @@ package org.example.model;
  * <p>Contiene información sobre su ubicación, estado y fecha de registro
  * en el sistema.</p>
  *
- * @author VJuan955
+ * @author AbelardoQuinones00
  * @version 1.0
  */
 public class Directorio {

@@ -7,7 +7,7 @@ package org.example.model;
  * información utilizada durante el proceso de recuperación de
  * documentos.</p>
  *
- * @author VJuan955
+ * @author AbelardoQuinones00
  * @version 1.0
  */
 public class Indice {

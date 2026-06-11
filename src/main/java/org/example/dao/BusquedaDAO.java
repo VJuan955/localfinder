@@ -7,7 +7,7 @@ import java.util.List;
  * Define las operaciones de persistencia relacionadas con las búsquedas
  * realizadas por los usuarios.
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public interface BusquedaDAO {

@@ -7,7 +7,7 @@ import java.util.List;
  * Define las operaciones de persistencia para los resultados
  * obtenidos en una búsqueda.
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public interface ResultadoDAO {

@@ -6,7 +6,7 @@ package org.example.model;
  * <p>Almacena los filtros utilizados y la fecha en la que se ejecutó
  * la consulta.</p>
  *
- * @author VJuan955
+ * @author AbelardoQuinones00
  * @version 1.0
  */
 public class Busqueda {

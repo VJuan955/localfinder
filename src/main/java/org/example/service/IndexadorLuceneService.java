@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * proveniente de la base de datos, permitiendo relacionar los
  * resultados obtenidos con los metadatos almacenados en SQLite.</p>
  *
- * @author VJuan955
+ * @author FiscalPro
  * @version 1.0
  */
 public class IndexadorLuceneService {

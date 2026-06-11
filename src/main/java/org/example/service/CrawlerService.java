@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * <p>El recorrido se realiza de forma recursiva utilizando la API
  * {@link java.nio.file.Files#walkFileTree(Path, FileVisitor)}.</p>
  *
- * @author VJuan955
+ * @author FiscalPro
  * @version 1.0
  */
 public class CrawlerService {

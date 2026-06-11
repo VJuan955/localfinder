@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * <p>También proporciona funcionalidades para calcular hashes SHA-256
  * utilizados en la detección de modificaciones y duplicados.</p>
  *
- * @author VJuan955
+ * @author FiscalPro
  * @version 1.0
  */
 public class ExtractorContenidoService {

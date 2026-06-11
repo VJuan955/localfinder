@@ -7,7 +7,7 @@ import java.util.List;
  * Define las operaciones de persistencia para los directorios
  * monitoreados por el sistema.
  *
- * @author VJuan955
+ * @author michellsalazar
  * @version 1.0
  */
 public interface DirectorioDAO {

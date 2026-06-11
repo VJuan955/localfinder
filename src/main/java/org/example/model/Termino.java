@@ -6,7 +6,7 @@ package org.example.model;
  * <p>Contiene la palabra indexada y la frecuencia total de aparición
  * en el conjunto de documentos.</p>
  *
- * @author VJuan955
+ * @author AbelardoQuinones00
  * @version 1.0
  */
 public class Termino {

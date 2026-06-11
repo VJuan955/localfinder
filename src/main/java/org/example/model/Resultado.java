@@ -6,7 +6,7 @@ package org.example.model;
  * <p>Contiene la posición y relevancia de un archivo dentro de
  * una consulta determinada.</p>
  *
- * @author VJuan955
+ * @author AbelardoQuinones00
  * @version 1.0
  */
 public class Resultado {
