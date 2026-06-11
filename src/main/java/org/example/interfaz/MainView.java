@@ -15,10 +15,9 @@ public class MainView {
     private final MainController controller;
     private boolean oscuro = true;
 
-    public MainView() {
+    public MainView(MainController controller) {
 
-        // Una sola instancia del controlador para toda la app
-        this.controller = new MainController();
+        this.controller = controller;
         this.root       = new BorderPane();
 
         // ─── Menú lateral ─────────────────────────────────────
