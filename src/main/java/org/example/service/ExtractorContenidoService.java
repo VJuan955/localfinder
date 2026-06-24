@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.service.interfaces.ExtractorContenido;
+
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 
@@ -27,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author FiscalPro
  * @version 1.0
  */
-public class ExtractorContenidoService {
+public class ExtractorContenidoService implements ExtractorContenido {
 
     private static final Logger logger = LoggerFactory.getLogger(ExtractorContenidoService.class);
 
@@ -54,6 +56,7 @@ public class ExtractorContenidoService {
      * @param rutaArchivo ruta del archivo a procesar
      * @return texto extraído o una cadena vacía si ocurre un error
      */
+    @Override
     public String extraerTexto(Path rutaArchivo) {
         try {
             String extraccion = tika.parseToString(rutaArchivo);
@@ -72,6 +75,7 @@ public class ExtractorContenidoService {
      * @return representación hexadecimal del hash calculado o
      *         {@code null} si ocurre un error
      */
+    @Override
     public String calcularHash(Path rutaArchivo) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.service.interfaces.IndexadorLucene;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -45,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * @author FiscalPro
  * @version 1.0
  */
-public class IndexadorLuceneService {
+public class IndexadorLuceneService implements IndexadorLucene {
 
     private static final Logger logger = LoggerFactory.getLogger(IndexadorLuceneService.class);
 
@@ -87,6 +89,7 @@ public class IndexadorLuceneService {
      * @param idArchivo identificador único del archivo
      * @param contenidoTexto contenido textual extraído del documento
      */
+    @Override
     public void indexarArchivo(int idArchivo, String contenidoTexto) {
         logger.debug("Indexando archivo {}", idArchivo);
 
@@ -124,6 +127,7 @@ public class IndexadorLuceneService {
      * @return mapa donde la clave representa el identificador
      *         del archivo y el valor su puntuación de relevancia
      */
+    @Override
     public Map<Integer, Float> buscar(String consultaUsuario, int limiteResultados) {
         Map<Integer, Float> resultados = new HashMap<>();
 

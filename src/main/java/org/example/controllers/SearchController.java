@@ -7,14 +7,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import org.example.dao.impl.*;
 import org.example.model.Archivo;
-import org.example.service.SistemaBusquedaService;
+import org.example.service.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 
@@ -52,7 +52,24 @@ public class SearchController implements Initializable {
 
         CompletableFuture.runAsync(() -> {
             try {
-                searchService = new SistemaBusquedaService();
+                CrawlerService crawler = new CrawlerService();
+                ExtractorContenidoService extractor = new ExtractorContenidoService();
+                IndexadorLuceneService indexador = new IndexadorLuceneService();
+
+                DirectorioDAOImpl directorioDAO = new DirectorioDAOImpl();
+                ArchivoDAOImpl archivoDAO = new ArchivoDAOImpl();
+                BusquedaDAOImpl busquedaDAO = new BusquedaDAOImpl();
+                ResultadoDAOImpl resultadoDAO = new ResultadoDAOImpl();
+
+                searchService = new SistemaBusquedaService(
+                        crawler,
+                        extractor,
+                        indexador,
+                        directorioDAO,
+                        archivoDAO,
+                        busquedaDAO,
+                        resultadoDAO
+                );
 
                 Platform.runLater(() -> setCrawlerStatus(true, "Activo (Sincronizando)"));
 
@@ -64,7 +81,7 @@ public class SearchController implements Initializable {
                 });
             } catch (IOException e) {
                 Platform.runLater(() -> setCrawlerStatus(false, "Error crítico de E/S"));
-                System.err.println("Error al inicializar el servicio: " + e.getMessage());
+                System.err.println("Error al inicializar el servicio SOLID: " + e.getMessage());
             }
         });
     }
@@ -75,21 +92,18 @@ public class SearchController implements Initializable {
     @FXML
     private void onConfigIndice() {
         setActiveNav(btnConfigIndice);
-        // TODO: Navegar a la vista de Configuración de Índice
         System.out.println("Navegar a: Configuración Índice");
     }
 
     @FXML
     private void onHistorial() {
         setActiveNav(btnHistorial);
-        // TODO: Navegar a la vista de Historial
         System.out.println("Navegar a: Historial");
     }
 
     @FXML
     private void onEstado() {
         setActiveNav(btnEstado);
-        // TODO: Navegar a la vista de Estado
         System.out.println("Navegar a: Estado");
     }
 
@@ -115,12 +129,6 @@ public class SearchController implements Initializable {
         filterChipsBox.setManaged(!isVisible);
     }
 
-    /**
-     * Punto de entrada para el motor de búsqueda.
-     * TODO: Reemplazar placeholder con llamada real al índice de búsqueda.
-     *
-     * @param query texto ingresado por el usuario
-     */
     private void performSearch(String query) {
         resultsContainer.getChildren().clear();
 
@@ -130,15 +138,15 @@ public class SearchController implements Initializable {
         }
 
         CompletableFuture.supplyAsync(() -> searchService.realizarBusqueda(query))
-                        .thenAccept(resultados -> Platform.runLater(() -> {
-                            if (resultados.isEmpty()) {
-                                showEmptyState("No se encontraron coincidencias para '" + query + "'");
-                            } else {
-                                for (Archivo archivo : resultados) {
-                                    resultsContainer.getChildren().add(buildResultCard(archivo));
-                                }
-                            }
-                        }));
+                .thenAccept(resultados -> Platform.runLater(() -> {
+                    if (resultados.isEmpty()) {
+                        showEmptyState("No se encontraron coincidencias para '" + query + "'");
+                    } else {
+                        for (Archivo archivo : resultados) {
+                            resultsContainer.getChildren().add(buildResultCard(archivo));
+                        }
+                    }
+                }));
     }
 
     private void showEmptyState(String message) {
@@ -192,7 +200,8 @@ public class SearchController implements Initializable {
         HBox tagsBox = new HBox(6);
         tagsBox.setAlignment(Pos.CENTER_LEFT);
 
-        Label typeTag = new Label(archivo.getTipoArchivo().toUpperCase());
+        String tipo = archivo.getTipoArchivo() != null ? archivo.getTipoArchivo().toUpperCase() : "TXT";
+        Label typeTag = new Label(tipo);
         typeTag.getStyleClass().addAll("tag", "tag-blue");
         tagsBox.getChildren().add(typeTag);
 
@@ -208,12 +217,15 @@ public class SearchController implements Initializable {
     }
 
     public void setCrawlerStatus(boolean activo, String mensaje) {
-        if (activo) {
-            crawlerDot.getStyleClass().setAll("crawler-dot-active");
-            crawlerStatusLabel.getStyleClass().setAll("crawler-active-text");
-        } else {
-            crawlerDot.getStyleClass().setAll("crawler-dot-inactive");
-            crawlerStatusLabel.getStyleClass().setAll("label");
-        }
+        Platform.runLater(() -> {
+            crawlerStatusLabel.setText(mensaje);
+            if (activo) {
+                crawlerDot.getStyleClass().setAll("crawler-dot-active");
+                crawlerStatusLabel.getStyleClass().setAll("crawler-active-text");
+            } else {
+                crawlerDot.getStyleClass().setAll("crawler-dot-inactive");
+                crawlerStatusLabel.getStyleClass().setAll("label");
+            }
+        });
     }
 }

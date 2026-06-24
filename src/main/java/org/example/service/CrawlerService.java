@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.Archivo;
+import org.example.service.interfaces.Crawler;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author FiscalPro
  * @version 1.0
  */
-public class CrawlerService {
+public class CrawlerService implements Crawler {
 
     private static final Logger logger = LoggerFactory.getLogger(CrawlerService.class);
 
@@ -42,6 +43,7 @@ public class CrawlerService {
      *                       que será explorado
      * @return lista de archivos detectados
      */
+    @Override
     public List<Archivo> rastrearDirectorio(String rutaDirectorio) {
         logger.info("Iniciando rastreo del directorio: {}", rutaDirectorio);
 

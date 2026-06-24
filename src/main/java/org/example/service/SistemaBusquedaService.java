@@ -1,13 +1,12 @@
 package org.example.service;
 
 import org.example.dao.*;
-import org.example.dao.impl.*;
+import org.example.service.interfaces.*;
 import org.example.model.Archivo;
 import org.example.model.Busqueda;
 import org.example.model.Directorio;
 import org.example.model.Resultado;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,25 +20,19 @@ import org.slf4j.LoggerFactory;
  * Servicio principal del sistema de búsqueda documental.
  *
  * <p>Coordina los procesos de rastreo, extracción de contenido,
- * indexación y recuperación de documentos.</p>
- *
- * <p>Actúa como capa de orquestación entre los servicios de
- * procesamiento documental, Apache Lucene y la capa de persistencia
- * basada en SQLite.</p>
- *
- * <p>También registra el historial de búsquedas y almacena los
- * resultados obtenidos para consultas posteriores.</p>
+ * indexación y recuperación de documentos aplicando Inversión de Dependencias (DIP)
+ * y el Principio de Abierto/Cerrado (OCP).</p>
  *
  * @author VJuan955
- * @version 1.0
+ * @version 3.0
  */
 public class SistemaBusquedaService {
 
     private static final Logger logger = LoggerFactory.getLogger(SistemaBusquedaService.class);
 
-    private final CrawlerService crawler;
-    private final ExtractorContenidoService extractor;
-    private final IndexadorLuceneService indexador;
+    private final Crawler crawler;
+    private final ExtractorContenido extractor;
+    private final IndexadorLucene indexador;
 
     private final DirectorioDAO directorioDAO;
     private final ArchivoDAO archivoDAO;
@@ -47,30 +40,29 @@ public class SistemaBusquedaService {
     private final ResultadoDAO resultadoDAO;
 
     /**
-     * Inicializa todos los servicios y componentes necesarios para
-     * el funcionamiento del sistema de búsqueda.
-     *
-     * @throws IOException si ocurre un error al inicializar
-     *                     el índice de Lucene
+     * Inicializa el servicio de orquestación mediante Inyección por Constructor.
+     * * <p>Al recibir interfaces, la clase queda cerrada a la modificación pero
+     * totalmente abierta a la extensión tecnológica.</p>
      */
-    public SistemaBusquedaService() throws IOException {
-        this.crawler = new CrawlerService();
-        this.extractor = new ExtractorContenidoService();
-        this.indexador = new IndexadorLuceneService();
-
-        this.directorioDAO = new DirectorioDAOImpl();
-        this.archivoDAO = new ArchivoDAOImpl();
-        this.busquedaDAO = new BusquedaDAOImpl();
-        this.resultadoDAO = new ResultadoDAOImpl();
+    public SistemaBusquedaService(Crawler crawler,
+                                  ExtractorContenido extractor,
+                                  IndexadorLucene indexador,
+                                  DirectorioDAO directorioDAO,
+                                  ArchivoDAO archivoDAO,
+                                  BusquedaDAO busquedaDAO,
+                                  ResultadoDAO resultadoDAO) {
+        this.crawler = crawler;
+        this.extractor = extractor;
+        this.indexador = indexador;
+        this.directorioDAO = directorioDAO;
+        this.archivoDAO = archivoDAO;
+        this.busquedaDAO = busquedaDAO;
+        this.resultadoDAO = resultadoDAO;
     }
 
     /**
      * Sincroniza el índice de búsqueda con todos los directorios
      * activos registrados en el sistema.
-     *
-     * <p>Para cada directorio activo se realiza un rastreo completo
-     * del contenido, verificando cambios mediante hashes SHA-256 e
-     * indexando únicamente los archivos nuevos o modificados.</p>
      */
     public void sincronizarIndice() {
         logger.info("Iniciando sincronización del índice");
@@ -89,8 +81,6 @@ public class SistemaBusquedaService {
     /**
      * Procesa un directorio específico realizando detección de cambios
      * e indexación incremental de documentos.
-     *
-     * @param directorio directorio que será procesado
      */
     private void procesarDirectorio(Directorio directorio) {
         logger.debug("Analizando directorio {}", directorio.getRutaDirectorio());
@@ -130,13 +120,6 @@ public class SistemaBusquedaService {
 
     /**
      * Ejecuta una búsqueda textual sobre el índice documental.
-     *
-     * <p>Los resultados obtenidos se almacenan en el historial
-     * de búsquedas junto con su ranking de relevancia.</p>
-     *
-     * @param consultaUsuario consulta introducida por el usuario
-     * @return lista de archivos coincidentes ordenados según
-     *         la relevancia calculada por Lucene
      */
     public List<Archivo> realizarBusqueda(String consultaUsuario) {
         logger.info("Ejecutando búsqueda: '{}'", consultaUsuario);
