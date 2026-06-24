@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.ConfigController"
+            styleClass="root-pane"
+            stylesheets="@../css/search-view.css, @../css/config-view.css">
+    <left>
+        <VBox styleClass="sidebar" prefWidth="180">
+
+            <HBox styleClass="sidebar-logo" alignment="CENTER_LEFT" spacing="10">
+                <StackPane styleClass="logo-icon">
+                    <Label text="Q" styleClass="logo-letter"/>
+                </StackPane>
+                <Label text="LocalFinder" styleClass="logo-text"/>
+            </HBox>
+            <Region prefHeight="16"/>
+            <VBox styleClass="nav-items" spacing="2" VBox.vgrow="ALWAYS">
+                <Button fx:id="btnMotorBusqueda"
+                        text="Motor de Búsqueda"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        onAction="#onMotorBusqueda">
+                    <graphic><Label text="⊡" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Button fx:id="btnConfigIndice"
+                        text="Configuración Índice"
+                        styleClass="nav-item, nav-item-active"
+                        maxWidth="Infinity"
+                        onAction="#onConfigIndice">
+                    <graphic><Label text="⚙" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Button fx:id="btnHistorial"
+                        text="Historial"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        onAction="#onHistorial">
+                    <graphic><Label text="◷" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Button fx:id="btnEstado"
+                        text="Estado"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        onAction="#onEstado">
+                    <graphic><Label text="◎" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
+            </VBox>
+            <HBox styleClass="crawler-status" alignment="CENTER_LEFT" spacing="8">
+                <Circle fx:id="crawlerDot" radius="5" styleClass="crawler-dot-active"/>
+                <Label text="Crawler: "/>
+                <Label fx:id="crawlerStatusLabel" text="Activo" styleClass="crawler-active-text"/>
+            </HBox>
+        </VBox>
+    </left>
+    <center>
+        <ScrollPane styleClass="main-scroll" fitToWidth="true">
+            <VBox styleClass="main-content-config" spacing="20">
+                <VBox.margin><Insets top="30" right="40" bottom="30" left="40"/></VBox.margin>
+                <VBox styleClass="config-card" spacing="0">
+                    <Label text="Carpetas Indexadas" styleClass="card-title"/>
+                    <Region prefHeight="12"/>
+                    <VBox fx:id="folderListContainer" spacing="10">
+                        <HBox styleClass="folder-row" alignment="CENTER_LEFT" spacing="10">
+                            <Label text="📁" styleClass="folder-icon"/>
+                            <Label text="C:/Users/Documents" styleClass="folder-path" HBox.hgrow="ALWAYS"/>
+                            <Button text="🗑" styleClass="delete-btn" onAction="#onDeleteFolder"/>
+                        </HBox>
+                        <HBox styleClass="folder-row" alignment="CENTER_LEFT" spacing="10">
+                            <Label text="📁" styleClass="folder-icon"/>
+                            <Label text="C:/Users/Downloads" styleClass="folder-path" HBox.hgrow="ALWAYS"/>
+                            <Button text="🗑" styleClass="delete-btn" onAction="#onDeleteFolder"/>
+                        </HBox>
+                        <HBox styleClass="folder-row" alignment="CENTER_LEFT" spacing="10">
+                            <Label text="📁" styleClass="folder-icon"/>
+                            <Label text="D:/Proyectos" styleClass="folder-path" HBox.hgrow="ALWAYS"/>
+                            <Button text="🗑" styleClass="delete-btn" onAction="#onDeleteFolder"/>
+                        </HBox>
+                        <HBox styleClass="folder-row" alignment="CENTER_LEFT" spacing="10">
+                            <Label text="📁" styleClass="folder-icon"/>
+                            <Label text="C:/Users/Desktop/Trabajo" styleClass="folder-path" HBox.hgrow="ALWAYS"/>
+                            <Button text="🗑" styleClass="delete-btn" onAction="#onDeleteFolder"/>
+                        </HBox>
+                    </VBox>
+                    <Region prefHeight="12"/>
+                    <Button fx:id="btnAddFolder"
+                            text="+ Agregar Carpeta"
+                            styleClass="add-folder-btn"
+                            maxWidth="Infinity"
+                            onAction="#onAddFolder"/>
+                </VBox>
+                <VBox styleClass="config-card" spacing="14">
+                    <Label text="Tipos de Archivo" styleClass="card-title"/>
+                    <Label text="Selecciona los tipos de archivos que deseas indexar"
+                           styleClass="card-subtitle"/>
+                    <VBox fx:id="fileTypesContainer" spacing="12">
+                        <CheckBox fx:id="chkPdf"
+                                  styleClass="filetype-check"
+                                  selected="true">
+                            <graphic>
+                                <HBox spacing="8" alignment="CENTER_LEFT">
+                                    <Label text=".pdf" styleClass="ext-label"/>
+                                    <Label text="Documentos PDF" styleClass="ext-desc"/>
+                                </HBox>
+                            </graphic>
+                        </CheckBox>
+                        <CheckBox fx:id="chkTxt"
+                                  styleClass="filetype-check"
+                                  selected="true">
+                            <graphic>
+                                <HBox spacing="8" alignment="CENTER_LEFT">
+                                    <Label text=".txt" styleClass="ext-label"/>
+                                    <Label text="Archivos de Texto" styleClass="ext-desc"/>
+                                </HBox>
+                            </graphic>
+                        </CheckBox>
+                        <CheckBox fx:id="chkDocx"
+                                  styleClass="filetype-check"
+                                  selected="false">
+                            <graphic>
+                                <HBox spacing="8" alignment="CENTER_LEFT">
+                                    <Label text=".docx" styleClass="ext-label"/>
+                                    <Label text="Documentos Word" styleClass="ext-desc"/>
+                                </HBox>
+                            </graphic>
+                        </CheckBox>
+                    </VBox>
+                </VBox>
+                <Region prefHeight="4"/>
+                <HBox alignment="CENTER_RIGHT">
+                    <Button fx:id="btnGuardar"
+                            text="Guardar Cambios"
+                            styleClass="save-btn"
+                            onAction="#onSave"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

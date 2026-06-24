@@ -1,0 +1,156 @@
+.main-scroll {
+    -fx-background-color: #f0f0f2;
+    -fx-background: #f0f0f2;
+    -fx-border-color: transparent;
+}
+
+.main-scroll > .viewport {
+    -fx-background-color: #f0f0f2;
+}
+
+.main-content-config {
+    -fx-background-color: #f0f0f2;
+}
+
+.config-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 24 26 24 26;
+    -fx-effect: dropshadow(gaussian, #00000010, 10, 0.2, 0, 2);
+}
+
+.card-title {
+    -fx-text-fill: #1a1d2e;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.card-subtitle {
+    -fx-text-fill: #9a9db5;
+    -fx-font-size: 12px;
+}
+
+.folder-row {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #e8e8f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12 14;
+}
+
+.folder-row:hover {
+    -fx-background-color: #fafafa;
+    -fx-border-color: #d0d0e0;
+}
+
+.folder-icon {
+    -fx-text-fill: #4a7bd5;
+    -fx-font-size: 16px;
+    -fx-min-width: 22;
+}
+
+.folder-path {
+    -fx-text-fill: #3a3d5a;
+    -fx-font-size: 13px;
+}
+
+.delete-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c0c4d8;
+    -fx-font-size: 14px;
+    -fx-padding: 4 8;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 6;
+}
+
+.delete-btn:hover {
+    -fx-background-color: #fff0f0;
+    -fx-text-fill: #e74c3c;
+}
+
+.add-folder-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #5a5e7a;
+    -fx-font-size: 13px;
+    -fx-padding: 14 0;
+    -fx-cursor: hand;
+    -fx-border-color: #c8cce0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 10;
+}
+
+.add-folder-btn:hover {
+    -fx-background-color: #f4f2fb;
+    -fx-border-color: #8066d6;
+    -fx-text-fill: #6b4fba;
+}
+
+.filetype-check {
+    -fx-font-size: 13px;
+    -fx-text-fill: #3a3d5a;
+    -fx-cursor: hand;
+}
+
+.filetype-check > .box {
+    -fx-background-color: white;
+    -fx-border-color: #c0c4d8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-border-width: 1.5;
+    -fx-min-width: 18;
+    -fx-min-height: 18;
+    -fx-max-width: 18;
+    -fx-max-height: 18;
+}
+
+.filetype-check:selected > .box {
+    -fx-background-color: #3a7bd5;
+    -fx-border-color: #3a7bd5;
+}
+
+.filetype-check:selected > .box > .mark {
+    -fx-background-color: white;
+    -fx-shape: "M 0 4 L 3 7 L 8 0";
+}
+
+.filetype-check:indeterminate > .box {
+    -fx-background-color: #3a7bd5;
+    -fx-border-color: #3a7bd5;
+}
+
+.ext-label {
+    -fx-text-fill: #4a4d6a;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Monospace";
+}
+
+.ext-desc {
+    -fx-text-fill: #6a6e8a;
+    -fx-font-size: 13px;
+}
+
+.save-btn {
+    -fx-background-color: #3a7bd5;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 28;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #3a7bd540, 10, 0.4, 0, 3);
+}
+
+.save-btn:hover {
+    -fx-background-color: #2e6abf;
+    -fx-effect: dropshadow(gaussian, #3a7bd560, 14, 0.5, 0, 4);
+}
+
+.save-btn:pressed {
+    -fx-background-color: #265caa;
+    -fx-effect: dropshadow(gaussian, #3a7bd530, 6, 0.3, 0, 1);
+}

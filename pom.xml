@@ -14,10 +14,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <javafx.version>21.0.4</javafx.version>
-        <tika.version>2.9.2</tika.version>
+        <tika.version>3.2.2</tika.version>
         <lucene.version>9.11.1</lucene.version>
         <sqlite.version>3.46.0.0</sqlite.version>
-        <logback.version>1.5.6</logback.version>
+        <logback.version>1.5.13</logback.version>
         <slf4j.version>2.0.13</slf4j.version>
     </properties>
 
@@ -121,7 +121,6 @@
                 <configuration>
                     <source>21</source>
                     <encoding>UTF-8</encoding>
-                    <docenconding>UTF-8</docenconding>
                     <charset>UTF-8</charset>
                     <author>true</author>
                     <version>true</version>

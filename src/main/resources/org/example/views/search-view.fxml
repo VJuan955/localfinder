@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.SearchController"
+            styleClass="root-pane"
+            stylesheets="@../css/search-view.css">
+    <left>
+        <VBox styleClass="sidebar" prefWidth="180">
+            <HBox styleClass="sidebar-logo" alignment="CENTER_LEFT" spacing="10">
+                <StackPane styleClass="logo-icon">
+                    <Label text="Q" styleClass="logo-letter"/>
+                </StackPane>
+                <Label text="LocalFinder" styleClass="logo-text"/>
+            </HBox>
+            <Region prefHeight="16"/>
+            <VBox styleClass="nav-items" spacing="2" VBox.vgrow="ALWAYS">
+                <Button fx:id="btnMotorBusqueda"
+                        text="Motor de Búsqueda"
+                        styleClass="nav-item, nav-item-active"
+                        maxWidth="Infinity"
+                        onAction="#onMotorBusqueda">
+                    <graphic>
+                        <Label text="⊡" styleClass="nav-icon"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="btnConfigIndice"
+                        text="Configuración Índice"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        onAction="#onConfigIndice">
+                    <graphic>
+                        <Label text="⚙" styleClass="nav-icon"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="btnHistorial"
+                        text="Historial"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        onAction="#onHistorial">
+                    <graphic>
+                        <Label text="◷" styleClass="nav-icon"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="btnEstado"
+                        text="Estado"
+                        styleClass="nav-item"
+                        maxWidth="Infinity"
+                        onAction="#onEstado">
+                    <graphic>
+                        <Label text="◎" styleClass="nav-icon"/>
+                    </graphic>
+                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
+            </VBox>
+            <HBox styleClass="crawler-status" alignment="CENTER_LEFT" spacing="8">
+                <Circle fx:id="crawlerDot" radius="5" styleClass="crawler-dot-active"/>
+                <Label text="Crawler: "/>
+                <Label fx:id="crawlerStatusLabel" text="Activo" styleClass="crawler-active-text"/>
+            </HBox>
+        </VBox>
+    </left>
+    <center>
+        <VBox styleClass="main-content" alignment="TOP_CENTER">
+            <Region prefHeight="80"/>
+            <HBox alignment="CENTER" spacing="16">
+                <StackPane styleClass="hero-logo-icon">
+                    <Label text="Q" styleClass="hero-logo-letter"/>
+                </StackPane>
+                <Label text="LocalFinder" styleClass="hero-title"/>
+            </HBox>
+            <Region prefHeight="32"/>
+            <HBox styleClass="search-bar-container" alignment="CENTER" maxWidth="520">
+                <HBox.margin>
+                    <Insets left="0" right="0"/>
+                </HBox.margin>
+                <TextField fx:id="searchField"
+                           promptText="Buscar archivos, documentos..."
+                           styleClass="search-field"
+                           HBox.hgrow="ALWAYS"
+                           onAction="#onSearch"/>
+                <Button styleClass="filter-icon-btn"
+                        text="▽"
+                        onAction="#onToggleFilters"/>
+            </HBox>
+            <Region prefHeight="12"/>
+            <HBox fx:id="filterChipsBox" alignment="CENTER" spacing="8">
+                <ToggleButton fx:id="chip1" text="Filtro 1" styleClass="filter-chip"/>
+                <ToggleButton fx:id="chip2" text="Filtro 2" styleClass="filter-chip"/>
+            </HBox>
+            <Region prefHeight="20"/>
+            <ScrollPane fx:id="resultsScrollPane"
+                        styleClass="results-scroll"
+                        fitToWidth="true"
+                        maxWidth="520"
+                        VBox.vgrow="ALWAYS">
+                <VBox fx:id="resultsContainer" spacing="10" styleClass="results-container">
+                    <VBox styleClass="result-card">
+                        <HBox alignment="CENTER_LEFT" spacing="14">
+                            <Label text="📄" styleClass="file-icon-pdf"/>
+                            <VBox spacing="3" HBox.hgrow="ALWAYS">
+                                <Label text="Reporte_Anual.pdf" styleClass="file-name"/>
+                                <Label text="/Documentos/Reportes/2025/Reporte_Anual.pdf"
+                                       styleClass="file-path"/>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <Label text="2.4 MB" styleClass="file-meta"/>
+                                    <Label text="•" styleClass="file-meta-dot"/>
+                                    <Label text="Modificado: 12/05/2026" styleClass="file-meta"/>
+                                </HBox>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <Label text="Finanzas" styleClass="tag tag-blue"/>
+                                    <Label text="Anual"    styleClass="tag tag-purple"/>
+                                    <Label text="2025"     styleClass="tag tag-green"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

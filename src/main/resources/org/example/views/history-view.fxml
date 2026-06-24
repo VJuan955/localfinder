@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.HistoryController"
+            styleClass="root-pane"
+            stylesheets="@../css/search-view.css, @../css/history-view.css">
+    <left>
+        <VBox styleClass="sidebar" prefWidth="180">
+            <HBox styleClass="sidebar-logo" alignment="CENTER_LEFT" spacing="10">
+                <StackPane styleClass="logo-icon">
+                    <Label text="Q" styleClass="logo-letter"/>
+                </StackPane>
+                <Label text="LocalFinder" styleClass="logo-text"/>
+            </HBox>
+            <Region prefHeight="16"/>
+            <VBox styleClass="nav-items" spacing="2" VBox.vgrow="ALWAYS">
+                <Button fx:id="btnMotorBusqueda" text="Motor de Búsqueda"
+                        styleClass="nav-item" maxWidth="Infinity"
+                        onAction="#onMotorBusqueda">
+                    <graphic><Label text="⊡" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Button fx:id="btnConfigIndice" text="Configuración Índice"
+                        styleClass="nav-item" maxWidth="Infinity"
+                        onAction="#onConfigIndice">
+                    <graphic><Label text="⚙" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Button fx:id="btnHistorial" text="Historial"
+                        styleClass="nav-item, nav-item-active" maxWidth="Infinity"
+                        onAction="#onHistorial">
+                    <graphic><Label text="◷" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Button fx:id="btnEstado" text="Estado"
+                        styleClass="nav-item" maxWidth="Infinity"
+                        onAction="#onEstado">
+                    <graphic><Label text="◎" styleClass="nav-icon"/></graphic>
+                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
+            </VBox>
+            <HBox styleClass="crawler-status" alignment="CENTER_LEFT" spacing="8">
+                <Circle fx:id="crawlerDot" radius="5" styleClass="crawler-dot-active"/>
+                <Label text="Crawler: "/>
+                <Label fx:id="crawlerStatusLabel" text="Activo" styleClass="crawler-active-text"/>
+            </HBox>
+        </VBox>
+    </left>
+    <center>
+        <VBox styleClass="history-main" spacing="0">
+            <HBox styleClass="history-header" alignment="CENTER_LEFT">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Historial de Búsqueda" styleClass="history-title"/>
+                    <Label text="Consultas realizadas y resultados obtenidos" styleClass="history-subtitle"/>
+                </VBox>
+                <Button fx:id="btnClearHistory"
+                        text="🗑  Limpiar Historial"
+                        styleClass="clear-history-btn"
+                        onAction="#onClearHistory"/>
+            </HBox>
+            <HBox styleClass="filter-bar-container" alignment="CENTER_LEFT" spacing="10">
+                <HBox.margin><Insets top="0" bottom="14"/></HBox.margin>
+                <Label text="▽" styleClass="filter-bar-icon"/>
+                <TextField fx:id="filterField"
+                           promptText="Filtrar por término de búsqueda..."
+                           styleClass="filter-bar-field"
+                           HBox.hgrow="ALWAYS"/>
+            </HBox>
+            <VBox styleClass="table-card" VBox.vgrow="ALWAYS">
+                <HBox styleClass="table-header-row">
+                    <Label text="Término"    styleClass="col-header" prefWidth="320"/>
+                    <Label text="Fecha"      styleClass="col-header" prefWidth="200"/>
+                    <Label text="Resultados" styleClass="col-header" prefWidth="220"/>
+                    <Label text="Acciones"   styleClass="col-header col-header-right" HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <ScrollPane fx:id="tableScroll" styleClass="table-scroll" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="tableBody" styleClass="table-body">
+                        <!-- Las filas se construyen dinámicamente desde el controlador -->
+                        <!-- Filas de ejemplo para diseño (se reemplazarán en initialize) -->
+                    </VBox>
+                </ScrollPane>
+
+            </VBox>
+            <HBox styleClass="table-footer" alignment="CENTER_LEFT">
+                <Label fx:id="footerCount" text="Mostrando 0 consultas"
+                       styleClass="footer-text" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="footerUpdate" text="Última actualización: hace 2 minutos"
+                       styleClass="footer-text footer-text-right"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
