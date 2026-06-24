@@ -8,5 +8,9 @@ public interface ArchivoDAO {
     void insertar(Archivo archivo, int idDirectorio);
     void actualizar(Archivo archivo);
     Optional<Archivo> buscarPorRuta(String ruta);
+    Optional<Archivo> buscarPorId(int idArchivo);
     List<Archivo> obtenerTodos();
+    int contar();
+    int contarPorDirectorio(int idDirectorio);
+    long obtenerUltimaModificacion();
 }

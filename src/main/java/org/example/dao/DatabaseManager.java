@@ -1,12 +1,32 @@
 package org.example.dao;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:sqlite:localfinder.db";
+
+    private static final Path DATA_DIR = Paths.get(
+            System.getProperty("user.home"), ".localfinder");
+    private static final Path DB_FILE = DATA_DIR.resolve("localfinder.db");
+    private static final String URL = "jdbc:sqlite:" + DB_FILE.toAbsolutePath();
+
+    static {
+        try {
+            Files.createDirectories(DATA_DIR);
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo crear el directorio de datos de LocalFinder", e);
+        }
+    }
+
+    public static Path getDataDir() {
+        return DATA_DIR;
+    }
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL);
@@ -20,7 +40,7 @@ public class DatabaseManager {
                     "id_directorio INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "ruta_directorio TEXT NOT NULL, " +
                     "estado TEXT NOT NULL, " +
-                    "fecha_registro INTEGER NOT NULL");
+                    "fecha_registro INTEGER NOT NULL)");
 
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_directorio_ruta ON Directorio(ruta_directorio)");
 
@@ -80,7 +100,7 @@ public class DatabaseManager {
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_resultado_ranking ON Resultado(ranking)");
 
         } catch (SQLException e) {
-            System.err.println("Error al inicializar la Base de datos" + e.getMessage());
+            throw new RuntimeException("Error al inicializar la base de datos: " + e.getMessage(), e);
         }
     }
 }
