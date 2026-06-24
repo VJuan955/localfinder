@@ -29,39 +29,6 @@ El sistema está construido bajo una arquitectura modular de 4 capas lógicas (P
 
 ---
 
-## Planes a Futuro: Diseño de Interfaz (UI)
-
-El próximo hito del proyecto es la implementación de la **Capa de Presentación** con JavaFX. El diseño minimalista contempla 5 vistas principales enfocadas en reducir la carga cognitiva del usuario.
-
-A continuación se detallan las vistas planificadas:
-
-### 1. Vista Principal: Motor de Búsqueda
-Interfaz centralizada estilo Google con resultados presentados en tarjetas dinámicas (nombre, ruta, fecha y un fragmento de contexto del texto encontrado).
-
-![Vista 1: Motor de Búsqueda](docs/images/vista1-motor-busqueda.png)
-
-### 2. Búsqueda Avanzada
-Modal integrado sobre la vista principal que permite aplicar filtros en tiempo real: tipo de archivo, rango de fechas de modificación, tamaño y propietario.
-
-![Vista 2: Búsqueda Avanzada](docs/images/vista2-busqueda-avanzada.png)
-
-### 3. Configuración del Índice
-Panel administrativo para agregar o excluir rutas locales específicas usando el explorador nativo del SO, permitiendo pausar rastreos sin perder configuraciones.
-
-![Vista 3: Configuración Índice](docs/images/vista3-configuracion.png)
-
-### 4. Historial de Búsquedas
-Tabla de control de productividad que registra localmente los términos buscados y métricas de resultados, con opciones para recargar búsquedas o limpiar registros.
-
-![Vista 4: Historial](docs/images/vista4-historial.png)
-
-### 5. Panel de Estado del Sistema
-Dashboard de monitoreo técnico (exclusivo para usuarios avanzados) con métricas en tiempo real de CPU/RAM, salud de la base de datos y logs de la actividad del crawler.
-
-![Vista 5: Panel Estado](docs/images/vista5-panel-estado.png)
-
----
-
 ## Instalación y Compilación (Desarrollo)
 
 Asegúrate de tener instalado **JDK 21** y **Maven** en tu entorno local.
