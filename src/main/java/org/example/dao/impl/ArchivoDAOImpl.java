@@ -1,4 +1,4 @@
-package org.example.dao.impl;
+package org.example.dao;
 
 import org.example.dao.ArchivoDAO;
 import org.example.dao.DatabaseManager;
@@ -12,7 +12,8 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
     @Override
     public void insertar(Archivo archivo, int idDirectorio) {
-        String sql = "INSERT INTO Archivo (ruta_directorio, nombre_archivo, tipo_archivo, tamano, hash_archivo, fecha_modificacion, id_directorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        String sql = "INSERT INTO Archivo (ruta_archivo, nombre_archivo, tipo_archivo, tamano, hash_archivo, fecha_modificacion, id_directorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -61,23 +62,44 @@ public class ArchivoDAOImpl implements ArchivoDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    Archivo archivo = new Archivo();
-
-                    archivo.setRutaArchivo(rs.getString("ruta_archivo"));
-                    archivo.setNombreArchivo(rs.getString("nombre_archivo"));
-                    archivo.setTipoArchivo(rs.getString("tipo_archivo"));
-                    archivo.setTamano(rs.getLong("tamano"));
-                    archivo.setHashArchivo(rs.getString("hash_archivo"));
-                    archivo.setFechaModificacion(rs.getLong("fecha_modificacion"));
-
-                    return Optional.of(archivo);
+                    return Optional.of(mapearArchivo(rs));
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error al buscar archivo: " + e.getMessage());
         }
-
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Archivo> buscarPorId(int idArchivo) {
+        String sql = "SELECT * FROM Archivo WHERE id_archivo = ?";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idArchivo);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapearArchivo(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar archivo por ID: " + e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    private Archivo mapearArchivo(ResultSet rs) throws SQLException {
+        Archivo archivo = new Archivo();
+        archivo.setIdArchivo(rs.getInt("id_archivo"));
+        archivo.setRutaArchivo(rs.getString("ruta_archivo"));
+        archivo.setNombreArchivo(rs.getString("nombre_archivo"));
+        archivo.setTipoArchivo(rs.getString("tipo_archivo"));
+        archivo.setTamano(rs.getLong("tamano"));
+        archivo.setHashArchivo(rs.getString("hash_archivo"));
+        archivo.setFechaModificacion(rs.getLong("fecha_modificacion"));
+        return archivo;
     }
 
     @Override
@@ -90,17 +112,58 @@ public class ArchivoDAOImpl implements ArchivoDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Archivo doc = new Archivo();
-                doc.setRutaArchivo(rs.getString("ruta_archivo"));
-                doc.setNombreArchivo(rs.getString("nombre_archivo"));
-                doc.setTipoArchivo(rs.getString("tipo_archivo"));
-                doc.setTamano(rs.getLong("tamano"));
-                doc.setFechaModificacion(rs.getLong("fecha_modificacion"));
-                archivos.add(doc);
+                archivos.add(mapearArchivo(rs));
             }
         } catch (SQLException e) {
             System.err.println("Error al listar archivos: " + e.getMessage());
         }
         return archivos;
+    }
+
+    @Override
+    public int contar() {
+        String sql = "SELECT COUNT(*) FROM Archivo";
+        try (Connection conn = DatabaseManager.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al contar archivos: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    @Override
+    public int contarPorDirectorio(int idDirectorio) {
+        String sql = "SELECT COUNT(*) FROM Archivo WHERE id_directorio = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idDirectorio);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al contar archivos del directorio: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    @Override
+    public long obtenerUltimaModificacion() {
+        String sql = "SELECT MAX(fecha_modificacion) FROM Archivo";
+        try (Connection conn = DatabaseManager.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener última modificación: " + e.getMessage());
+        }
+        return 0;
     }
 }

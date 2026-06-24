@@ -1,4 +1,4 @@
-package org.example.dao.impl;
+package org.example.dao;
 
 import org.example.dao.DatabaseManager;
 import org.example.dao.DirectorioDAO;
@@ -32,7 +32,8 @@ public class DirectorioDAOImpl implements DirectorioDAO {
 
     @Override
     public void actualizarEstado(int idDirectorio, String nuevoEstado) {
-        String sql = "UPDATE Directorio SET estado = ? WHERE idDirectorio = ?";
+        
+        String sql = "UPDATE Directorio SET estado = ? WHERE id_directorio = ?";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -61,7 +62,7 @@ public class DirectorioDAOImpl implements DirectorioDAO {
                 directorios.add(dir);
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener el directorios: " + e.getMessage());
+            System.err.println("Error al obtener directorios: " + e.getMessage());
         }
         return directorios;
     }

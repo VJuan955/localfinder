@@ -1,7 +1,5 @@
-package org.example.dao.impl;
+package org.example.dao;
 
-import org.example.dao.DatabaseManager;
-import org.example.dao.IndiceDAO;
 import org.example.model.Indice;
 import java.sql.*;
 import java.util.ArrayList;
